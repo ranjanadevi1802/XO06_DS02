@@ -1,6 +1,8 @@
+# %%
 import pandas as pd
 import numpy as np
 
+# %%
 # 1. LOAD DATA
 TRAIN_PATH = "data/development_train.csv"
 VALIDATION_PATH = "data/development_validation.csv"
@@ -12,7 +14,7 @@ print("=" * 60)
 print("DATA TRUST ENGINE - INITIAL DATA ANALYSIS")
 print("=" * 60)
 
-
+# %%
 # 2. BASIC DATASET INFORMATION
 print("\n--- DATASET SHAPE ---")
 
@@ -24,7 +26,7 @@ print("\nValidation data:")
 print("Rows:", validation_df.shape[0])
 print("Columns:", validation_df.shape[1])
 
-
+# %%
 # 3. COLUMN NAMES
 print("\n--- COLUMNS ---")
 
@@ -34,7 +36,7 @@ print(train_df.columns.tolist())
 print("\nValidation columns:")
 print(validation_df.columns.tolist())
 
-
+# %%
 # 4. CLEAN COLUMN NAMES
 train_df.columns = (
     train_df.columns
@@ -49,14 +51,14 @@ validation_df.columns = (
 )
 
 
-
+# %%
 # 5. DATA TYPES
 print("\n--- DATA TYPES ---")
 
 print(train_df.dtypes)
 
 
-
+# %%
 # 6. CONVERT TIMESTAMP
 train_df["Timestamp"] = pd.to_datetime(
     train_df["Timestamp"],
@@ -83,7 +85,7 @@ print(
 )
 
 
-
+# %%
 # 7. NUMERIC COLUMNS
 numeric_columns = [
     "CO_Channel",
@@ -107,7 +109,7 @@ for col in numeric_columns:
     )
 
 
-
+# %%
 # 8. MISSING VALUES
 print("\n--- MISSING VALUES: TRAINING ---")
 print(train_df.isnull().sum())
@@ -115,7 +117,7 @@ print("\n--- MISSING VALUES: VALIDATION ---")
 print(validation_df.isnull().sum())
 
 
-
+# %%
 # 9. MISSING VALUE PERCENTAGE
 print("\n--- MISSING VALUE % ---")
 
@@ -134,7 +136,7 @@ print("\nValidation:")
 print(validation_missing)
 
 
-
+# %%
 # 10. DUPLICATE CHECK
 print("\n--- DUPLICATES ---")
 
@@ -163,7 +165,7 @@ print(
 )
 
 
-
+# %%
 # 11. STATION INFORMATION
 print("\n--- STATIONS ---")
 
@@ -184,7 +186,7 @@ print("\nValidation station distribution:")
 print(validation_df["Station_ID"].value_counts())
 
 
-
+# %%
 # 12. DATE RANGE
 print("\n--- DATE RANGE ---")
 
@@ -203,7 +205,7 @@ print(
 )
 
 
-
+# %%
 # 13. STATISTICAL SUMMARY
 print("\n--- TRAINING STATISTICS ---")
 
@@ -219,7 +221,7 @@ print(
 )
 
 
-
+# %%
 # 14. CORRELATION ANALYSIS
 
 
@@ -230,7 +232,7 @@ print(
 )
 
 
-
+# %%
 # 15. SORT DATA
 
 
@@ -243,7 +245,7 @@ validation_df = validation_df.sort_values(
 ).reset_index(drop=True)
 
 
-
+# %%
 # 16. TIME DIFFERENCE
 
 
@@ -268,7 +270,7 @@ print(
 )
 
 
-
+# %%
 # 17. BASIC RANGE VALIDATION
 
 
@@ -295,7 +297,7 @@ print(
 )
 
 
-
+# %%
 # 18. CREATE MISSING INDICATORS
 
 
@@ -310,7 +312,7 @@ for col in numeric_columns:
     )
 
 
-
+# %%
 # 19. FINAL OUTPUT
 print("\n" + "=" * 60)
 print("INITIAL DATA PROFILING COMPLETED")
@@ -321,3 +323,347 @@ print(train_df.head())
 
 print("\nValidation preview:")
 print(validation_df.head())
+
+# %%
+# 19. DETAILED DATA QUALITY CHECK
+
+print("\n" + "=" * 60)
+print("DETAILED DATA QUALITY CHECK - TRAINING DATA")
+print("=" * 60)
+
+print("\n--- INFINITE VALUES ---")
+print(np.isinf(train_df[numeric_columns]).sum())
+
+print("\n--- NEGATIVE VALUES ---")
+
+for col in numeric_columns:
+    print(
+        col,
+        ":",
+        (train_df[col] < 0).sum()
+    )
+
+print("\n--- UNIQUE VALUES ---")
+
+for col in numeric_columns:
+    print(
+        col,
+        ":",
+        train_df[col].nunique()
+    )
+
+# %%
+# 20. VALIDATION RANGES
+
+VALID_RANGES = {
+    "CO_Channel": (0, np.inf),
+    "NOx_Channel": (0, np.inf),
+    "NO2_Channel": (0, np.inf),
+    "Ambient_Temperature": (-50, 60),
+    "Relative_Humidity": (0, 100),
+    "Absolute_Humidity": (0, np.inf)
+}
+
+print("\n--- RANGE VALIDATION ---")
+
+for col, (lower, upper) in VALID_RANGES.items():
+
+    invalid_count = (
+        (train_df[col] < lower) |
+        (train_df[col] > upper)
+    ).sum()
+
+    print(
+        f"{col}: {invalid_count} invalid values"
+    )
+
+# %%
+# 21. RANGE VIOLATION FEATURES
+
+for col, (lower, upper) in VALID_RANGES.items():
+
+    train_df[f"{col}_RangeViolation"] = (
+        (train_df[col] < lower) |
+        (train_df[col] > upper)
+    ).astype(int)
+
+
+range_columns = [
+    col for col in train_df.columns
+    if "RangeViolation" in col
+]
+
+print("\n--- RANGE VIOLATION COUNTS ---")
+
+print(
+    train_df[range_columns].sum()
+)
+
+# %%
+# 22. SENSOR CHANGE FEATURES
+
+sensor_columns = numeric_columns.copy()
+
+for col in sensor_columns:
+
+    train_df[f"{col}_Diff"] = (
+        train_df
+        .groupby("Station_ID")[col]
+        .diff()
+    )
+
+print("\n--- SENSOR CHANGES ---")
+
+print(
+    train_df[
+        [
+            "Station_ID",
+            "Timestamp",
+            "CO_Channel",
+            "CO_Channel_Diff",
+            "NOx_Channel",
+            "NOx_Channel_Diff"
+        ]
+    ].head(10)
+)
+
+# %%
+# 23. SPIKE DETECTION
+
+spike_thresholds = {}
+
+for col in sensor_columns:
+
+    diff_col = f"{col}_Diff"
+
+    threshold = (
+        train_df[diff_col]
+        .abs()
+        .quantile(0.99)
+    )
+
+    spike_thresholds[col] = threshold
+
+    train_df[f"{col}_Spike"] = (
+        train_df[diff_col].abs() > threshold
+    ).astype(int)
+
+
+print("\n--- SPIKE THRESHOLDS ---")
+
+for col, threshold in spike_thresholds.items():
+    print(col, ":", threshold)# %%
+
+# %%
+# 24. STUCK SENSOR DETECTION
+
+for col in sensor_columns:
+
+    previous_value = (
+        train_df
+        .groupby("Station_ID")[col]
+        .shift(1)
+    )
+
+    same_as_previous = (
+        train_df[col] == previous_value
+    )
+
+    train_df[f"{col}_Stuck"] = (
+        same_as_previous
+        .groupby(train_df["Station_ID"])
+        .transform(
+            lambda x: x.rolling(5).sum() >= 5
+        )
+        .astype(int)
+    )
+
+
+stuck_columns = [
+    col for col in train_df.columns
+    if "_Stuck" in col
+]
+
+print("\n--- STUCK SENSOR COUNTS ---")
+
+print(
+    train_df[stuck_columns].sum()
+)# %%
+
+# %%
+# 26. OBSERVATION QUALITY FEATURES
+
+missing_columns = [
+    f"{col}_Missing"
+    for col in sensor_columns
+]
+
+spike_columns = [
+    f"{col}_Spike"
+    for col in sensor_columns
+]
+
+train_df["Missing_Count"] = (
+    train_df[missing_columns]
+    .sum(axis=1)
+)
+
+train_df["Range_Violation_Count"] = (
+    train_df[range_columns]
+    .sum(axis=1)
+)
+
+train_df["Spike_Count"] = (
+    train_df[spike_columns]
+    .sum(axis=1)
+)
+
+train_df["Stuck_Count"] = (
+    train_df[stuck_columns]
+    .sum(axis=1)
+)
+
+
+print("\n--- QUALITY FEATURES ---")
+
+print(
+    train_df[
+        [
+            "Missing_Count",
+            "Range_Violation_Count",
+            "Spike_Count",
+            "Stuck_Count",
+            "Time_Gap"
+        ]
+    ].describe()
+)
+
+# %%
+# 25. TIME GAP DETECTION
+
+EXPECTED_INTERVAL = pd.Timedelta(hours=1)
+
+train_df["Time_Gap"] = (
+    train_df["Time_Diff"] != EXPECTED_INTERVAL
+).astype(int)
+
+print("\n--- TIME GAPS ---")
+
+print(
+    "Unexpected time gaps:",
+    train_df["Time_Gap"].sum()
+)
+
+# %%
+# 26. OBSERVATION QUALITY FEATURES
+
+missing_columns = [
+    f"{col}_Missing"
+    for col in sensor_columns
+]
+
+spike_columns = [
+    f"{col}_Spike"
+    for col in sensor_columns
+]
+
+train_df["Missing_Count"] = (
+    train_df[missing_columns]
+    .sum(axis=1)
+)
+
+train_df["Range_Violation_Count"] = (
+    train_df[range_columns]
+    .sum(axis=1)
+)
+
+train_df["Spike_Count"] = (
+    train_df[spike_columns]
+    .sum(axis=1)
+)
+
+train_df["Stuck_Count"] = (
+    train_df[stuck_columns]
+    .sum(axis=1)
+)
+
+
+print("\n--- QUALITY FEATURES ---")
+
+print(
+    train_df[
+        [
+            "Missing_Count",
+            "Range_Violation_Count",
+            "Spike_Count",
+            "Stuck_Count",
+            "Time_Gap"
+        ]
+    ].describe()
+)
+
+
+# %%
+# 27. INITIAL TRUST SCORE
+
+train_df["Trust_Score"] = 100
+
+train_df["Trust_Score"] -= (
+    train_df["Missing_Count"] * 15
+)
+
+train_df["Trust_Score"] -= (
+    train_df["Range_Violation_Count"] * 20
+)
+
+train_df["Trust_Score"] -= (
+    train_df["Spike_Count"] * 10
+)
+
+train_df["Trust_Score"] -= (
+    train_df["Stuck_Count"] * 10
+)
+
+train_df["Trust_Score"] -= (
+    train_df["Time_Gap"] * 10
+)
+
+train_df["Trust_Score"] = (
+    train_df["Trust_Score"]
+    .clip(0, 100)
+)
+
+print("\n--- TRUST SCORE ---")
+
+print(
+    train_df["Trust_Score"].describe()
+)
+
+# %%
+# 28. TRUST CATEGORIES
+
+def trust_category(score):
+
+    if score >= 80:
+        return "High Trust"
+
+    elif score >= 50:
+        return "Medium Trust"
+
+    else:
+        return "Low Trust"
+
+
+train_df["Trust_Category"] = (
+    train_df["Trust_Score"]
+    .apply(trust_category)
+)
+
+print("\n--- TRUST DISTRIBUTION ---")
+
+print(
+    train_df["Trust_Category"]
+    .value_counts()
+)
+
+# %%
