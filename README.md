@@ -454,7 +454,6 @@ By introducing a reliability layer on top of raw measurements, the system can su
 | 13 | Streamlit Dashboard | ⚪ Not Started | — | Interactive trust assessment |
 | 14 | Testing | ⚪ Not Started | Team | Edge cases and robustness |
 | 15 | Documentation | 🟡 In Progress | Teammate | README and technical documentation |
-
 | 16 | Final Demo | ⚪ Not Started | Team | Presentation and demonstration |
 
 ---
