@@ -40,6 +40,21 @@ the trustworthiness of individual measurements.
 
 ---
 
+## 🛠️ Technologies Used
+
+* **Python**
+* **Pandas**
+* **NumPy**
+* **Matplotlib**
+* **Seaborn**
+* **Scikit-learn**
+* **Jupyter Notebook**
+* **VS Code**
+* **Git**
+* **GitHub**
+
+---
+
 ## 💡 Why Our Approach?
 
 We do not want to classify a measurement as unreliable based on a single rule.
@@ -333,21 +348,6 @@ Depending on the final modeling approach, relevant metrics may include:
 
 ---
 
-## 🛠️ Technologies Used
-
-* **Python**
-* **Pandas**
-* **NumPy**
-* **Matplotlib**
-* **Seaborn**
-* **Scikit-learn**
-* **Jupyter Notebook**
-* **VS Code**
-* **Git**
-* **GitHub**
-
----
-
 ## 📁 Project Structure
 
 ```text
@@ -357,24 +357,12 @@ XO06_DS02/
 │   ├── development_train.csv
 │   └── development_validation.csv
 │
-├── notebooks/
-│   ├── 01_data_exploration.ipynb
-│   ├── 02_eda.ipynb
-│   ├── 03_feature_engineering.ipynb
-│   └── 04_modeling.ipynb
-│
 ├── src/
-│   ├── preprocessing.py
-│   ├── feature_engineering.py
-│   ├── anomaly_detection.py
-│   └── trust_engine.py
+│   ├── main.py
+│   └── Data cleaning.ipynb
 │
-├── outputs/
-│   ├── figures/
-│   └── predictions/
-│
-├── requirements.txt
-└── README.md
+├── README.md
+└── requirements.txt
 ```
 
 ---
@@ -420,19 +408,6 @@ The Data Trust Engine aims to answer an additional and more important question:
 By introducing a reliability layer on top of raw measurements, the system can support more informed analysis and decision-making in multi-channel monitoring environments.
 
 ---
-
-## 🏆 Hackathon
-
-**Problem Statement:** PS02 — Data Trust Engine
-
-**Challenge:** Intelligent Reliability Assessment for Multi-Channel Measurements
-
-**Team:** XO06
-
-**Development Data:** 11,900 observations across 8 columns
-
----
-
 ## 🚀 Project Status
 
 |## 🚀 Project Progress
@@ -455,6 +430,18 @@ By introducing a reliability layer on top of raw measurements, the system can su
 | 14 | Testing | ⚪ Not Started | Team | Edge cases and robustness |
 | 15 | Documentation | 🟡 In Progress | Teammate | README and technical documentation |
 | 16 | Final Demo | ⚪ Not Started | Team | Presentation and demonstration |
+
+---
+
+## 🏆 Hackathon
+
+**Problem Statement:** PS02 — Data Trust Engine
+
+**Challenge:** Intelligent Reliability Assessment for Multi-Channel Measurements
+
+**Team:** XO06
+
+**Development Data:** 11,900 observations across 8 columns
 
 ---
 
