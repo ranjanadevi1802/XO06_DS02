@@ -1,6 +1,10 @@
 # %%
 import pandas as pd
 import numpy as np
+from src.Feature_engineering import (
+    create_temporal_features,
+    create_relationship_features
+)
 
 # %%
 # 1. LOAD DATA
@@ -618,4 +622,19 @@ print(
     .value_counts()
 )
 
+# %%
+# TEMPORAL FEATURE ENGINEERING
 
+train_df = create_temporal_features(
+    train_df,
+    sensor_columns
+)
+
+validation_df = create_temporal_features(
+    validation_df,
+    sensor_columns
+)
+
+print("\nTemporal features created successfully.")
+
+# %%
