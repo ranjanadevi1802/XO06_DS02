@@ -491,54 +491,6 @@ print(
 )# %%
 
 # %%
-# 26. OBSERVATION QUALITY FEATURES
-
-missing_columns = [
-    f"{col}_Missing"
-    for col in sensor_columns
-]
-
-spike_columns = [
-    f"{col}_Spike"
-    for col in sensor_columns
-]
-
-train_df["Missing_Count"] = (
-    train_df[missing_columns]
-    .sum(axis=1)
-)
-
-train_df["Range_Violation_Count"] = (
-    train_df[range_columns]
-    .sum(axis=1)
-)
-
-train_df["Spike_Count"] = (
-    train_df[spike_columns]
-    .sum(axis=1)
-)
-
-train_df["Stuck_Count"] = (
-    train_df[stuck_columns]
-    .sum(axis=1)
-)
-
-
-print("\n--- QUALITY FEATURES ---")
-
-print(
-    train_df[
-        [
-            "Missing_Count",
-            "Range_Violation_Count",
-            "Spike_Count",
-            "Stuck_Count",
-            "Time_Gap"
-        ]
-    ].describe()
-)
-
-# %%
 # 25. TIME GAP DETECTION
 
 EXPECTED_INTERVAL = pd.Timedelta(hours=1)
