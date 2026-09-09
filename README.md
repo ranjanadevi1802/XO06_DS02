@@ -373,20 +373,27 @@ By introducing a reliability layer on top of raw measurements, the system can su
 
 ## 🚀 Project Status
 
-| Stage                         | Status         |
-| ----------------------------- | -------------- |
-| Dataset Collection            | ✅ Completed    |
-| Data Understanding            | 🔄 In Progress |
-| Data Quality Analysis         | 🔄 In Progress |
-| Exploratory Data Analysis     | 🔄 In Progress |
-| Temporal Analysis             | ⏳ Pending      |
-| Channel Relationship Analysis | ⏳ Pending      |
-| Feature Engineering           | ⏳ Pending      |
-| Reliability Modeling          | ⏳ Pending      |
-| Anomaly Detection             | ⏳ Pending      |
-| Trust Score Generation        | ⏳ Pending      |
-| Validation                    | ⏳ Pending      |
-| Final Solution                | ⏳ Pending      |
+|## 🚀 Project Progress
+
+| # | Task | Status | Owner | Notes |
+|---|------|--------|-------|-------|
+| 1 | Problem Understanding | 🟢 Completed | Team | PS02 requirements analyzed |
+| 2 | Repository Setup | 🟢 Completed | Team | GitHub repository created |
+| 3 | Dataset Loading | 🟢 Completed | Ranjana | Train & validation datasets loaded |
+| 4 | Initial Data Exploration | 🟢 In Progress | Ranjana | Shape, columns, types, statistics |
+| 5 | Data Cleaning | 🟢 Not Started | — | Missing values, duplicates, invalid values |
+| 6 | Feature Engineering | ⚪ Not Started | — | Temporal & cross-channel features |
+| 7 | Anomaly Detection | ⚪ Not Started | — | Isolation Forest / statistical methods |
+| 8 | Trust Score Engine | ⚪ Not Started | — | Observation-level reliability score |
+| 9 | Issue Classification | ⚪ Not Started | — | Spike, drift, missing, inconsistency, etc. |
+| 10 | Recommendation Engine | ⚪ Not Started | — | Accept / Correct / Flag / Reject |
+| 11 | Explainability | ⚪ Not Started | — | Reasons behind each trust decision |
+| 12 | Model Evaluation | ⚪ Not Started | — | Validation dataset evaluation |
+| 13 | Streamlit Dashboard | ⚪ Not Started | — | Interactive trust assessment |
+| 14 | Testing | ⚪ Not Started | Team | Edge cases and robustness |
+| 15 | Documentation | 🟡 In Progress | Teammate | README and technical documentation |
+
+| 16 | Final Demo | ⚪ Not Started | Team | Presentation and demonstration |
 
 ---
 
