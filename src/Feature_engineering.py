@@ -70,32 +70,52 @@ def create_relationship_features(df, sensor_columns):
 
     df = df.copy()
 
-    # Correlation-based relationship features
+    print("\n--- SENSOR CORRELATION MATRIX ---")
+
     correlation_matrix = df[sensor_columns].corr()
 
-    print("\n--- SENSOR CORRELATION MATRIX ---")
     print(correlation_matrix.round(2))
 
-    # Relationship deviation using rolling correlations
+    # Create relationship difference features
     for i in range(len(sensor_columns)):
         for j in range(i + 1, len(sensor_columns)):
 
             col1 = sensor_columns[i]
             col2 = sensor_columns[j]
 
+            mean1 = (
+                df.groupby("Station_ID")[col1]
+                .transform("mean")
+            )
+
+            std1 = (
+                df.groupby("Station_ID")[col1]
+                .transform("std")
+            )
+
+            mean2 = (
+                df.groupby("Station_ID")[col2]
+                .transform("mean")
+            )
+
+            std2 = (
+                df.groupby("Station_ID")[col2]
+                .transform("std")
+            )
+
+            z1 = (
+                (df[col1] - mean1)
+                / std1.replace(0, np.nan)
+            )
+
+            z2 = (
+                (df[col2] - mean2)
+                / std2.replace(0, np.nan)
+            )
+
             relationship_col = (
                 f"{col1}_{col2}_Difference"
             )
-
-            # Standardized difference
-            mean1 = df.groupby("Station_ID")[col1].transform("mean")
-            std1 = df.groupby("Station_ID")[col1].transform("std")
-
-            mean2 = df.groupby("Station_ID")[col2].transform("mean")
-            std2 = df.groupby("Station_ID")[col2].transform("std")
-
-            z1 = (df[col1] - mean1) / std1.replace(0, np.nan)
-            z2 = (df[col2] - mean2) / std2.replace(0, np.nan)
 
             df[relationship_col] = (
                 z1 - z2

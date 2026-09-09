@@ -1,10 +1,8 @@
 # %%
 import pandas as pd
 import numpy as np
-from src.feature_engineering import (
-    create_temporal_features,
-    create_relationship_features
-)
+from src.feature_engineering import create_temporal_features
+from src.feature_engineering import create_relationship_features
 
 # %%
 # 1. LOAD DATA
@@ -638,3 +636,36 @@ validation_df = create_temporal_features(
 print("\nTemporal features created successfully.")
 
 # %%
+# RELATIONSHIP FEATURE ENGINEERING
+
+train_df = create_relationship_features(
+    train_df,
+    sensor_columns
+)
+
+validation_df = create_relationship_features(
+    validation_df,
+    sensor_columns
+)
+
+print("\nRelationship features created successfully.")
+
+# %%
+# RELATIONSHIP VISUALIZATION
+
+import matplotlib.pyplot as plt
+
+plt.figure(figsize=(8, 6))
+
+plt.scatter(
+    train_df["NOx_Channel"],
+    train_df["NO2_Channel"],
+    alpha=0.5
+)
+
+plt.xlabel("NOx Channel")
+plt.ylabel("NO2 Channel")
+plt.title("NOx vs NO2 Relationship")
+
+plt.grid(True)
+plt.show()
