@@ -65,6 +65,7 @@ def create_temporal_features(df, sensor_columns, rolling_window=6):
 
     return df
 
+
 def create_relationship_features(df, sensor_columns):
 
     df = df.copy()
