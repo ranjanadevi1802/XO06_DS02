@@ -442,8 +442,8 @@ By introducing a reliability layer on top of raw measurements, the system can su
 | 1 | Problem Understanding | 🟢 Completed | Team | PS02 requirements analyzed |
 | 2 | Repository Setup | 🟢 Completed | Team | GitHub repository created |
 | 3 | Dataset Loading | 🟢 Completed | Ranjana | Train & validation datasets loaded |
-| 4 | Initial Data Exploration | 🟢 In Progress | Ranjana | Shape, columns, types, statistics |
-| 5 | Data Cleaning | 🟢 Not Started | — | Missing values, duplicates, invalid values |
+| 4 | Initial Data Exploration | 🟢 Completed | Ranjana | Shape, columns, types, statistics |
+| 5 | Data Cleaning | 🟢 completed | Ranjana | Missing values, duplicates, invalid values |
 | 6 | Feature Engineering | ⚪ Not Started | — | Temporal & cross-channel features |
 | 7 | Anomaly Detection | ⚪ Not Started | — | Isolation Forest / statistical methods |
 | 8 | Trust Score Engine | ⚪ Not Started | — | Observation-level reliability score |
