@@ -1,76 +1,123 @@
 # 🔐 Data Trust Engine
-
 ## Intelligent Reliability Assessment for Multi-Channel Measurements
 
-An intelligent **Data Trust Engine** designed to assess the reliability of multi-channel environmental measurements by analyzing **cross-channel relationships, temporal behaviour, statistical patterns, and individual observations**.
+## 🎯 Project Objective
 
-The system aims to identify potentially unreliable or anomalous measurements and provide an interpretable assessment of **how much a measurement can be trusted**.
+The objective of our project is to determine **how trustworthy each measurement is** in a multi-channel monitoring dataset.
+
+A monitoring system records measurements, but a recorded value is not automatically a reliable value. Measurements may be affected by:
+
+- Sensor noise
+- Sudden spikes or drops
+- Missing or invalid observations
+- Unusual temporal behaviour
+- Deviation from related channels
+- Persistent abnormal patterns
+
+Our solution therefore adds a **reliability layer** to the raw measurements.
+
+Instead of only asking:
+
+> **"What did the sensor measure?"**
+
+we aim to answer:
+
+> **"How much can we trust this measurement, and why?"**
 
 ---
 
 ## 🎯 Problem Statement
 
-Environmental monitoring systems continuously collect measurements from multiple channels. However, raw sensor observations cannot always be assumed to be reliable.
+The challenge is to assess the reliability of observations collected from a **multi-channel monitoring system**.
 
-Measurements may be affected by:
+A potentially unreliable observation may not always be obvious from the value itself. Therefore, the system needs to consider the **relationship between channels, behaviour over time, statistical characteristics, and observation-level data quality**.
 
-* Sensor noise
-* Sensor malfunction
-* Sudden anomalies
-* Environmental changes
-* Temporal variations
-* Inconsistent observations
-* Channel-level deviations
-
-The challenge is therefore not only to analyze the measurements, but also to determine **whether each observation is trustworthy**.
-
-### Our Goal
-
-Build a data-driven reliability assessment system that can:
+Our goal is to develop a data-driven system that can:
 
 > **Detect → Analyze → Score → Validate**
 
-the trustworthiness of multi-channel measurements.
+the trustworthiness of individual measurements.
 
 ---
 
-## 💡 Our Approach
+## 💡 Why Our Approach?
 
-The Data Trust Engine evaluates measurements from multiple perspectives rather than relying on a single signal.
+We do not want to classify a measurement as unreliable based on a single rule.
+
+For example, a sudden change in one channel could represent:
+
+- A genuine environmental change
+- Sensor noise
+- Sensor malfunction
+- A temporary anomaly
+
+Therefore, we will combine evidence from multiple dimensions:
+
+| Dimension | What we investigate | Why it matters |
+|---|---|---|
+| **Cross-Channel** | Relationships and differences between channels | Identifies channel disagreement |
+| **Temporal** | Trends, spikes, drops and persistence | Identifies unusual behaviour over time |
+| **Statistical** | Deviation from expected distributions/patterns | Identifies statistically unusual observations |
+| **Data Quality** | Missing, invalid or inconsistent observations | Identifies direct data-quality issues |
+
+These signals will be transformed into **reliability features** and used to assess the trustworthiness of each observation.
+
+> **Key principle:** An anomaly is not automatically an unreliable measurement. Multiple signals should be considered before assigning a trust score.
+
+---
+
+## 🔄 Proposed Workflow/Approach
 
 ```text
-                  Multi-Channel Measurements
-                            │
-                            ▼
-                    Data Understanding
-                            │
-                            ▼
-                    Data Quality Checks
-                            │
-                            ▼
-                   Exploratory Analysis
-                            │
-              ┌─────────────┴─────────────┐
-              ▼                           ▼
-       Channel Analysis             Time Analysis
-              │                           │
-              └─────────────┬─────────────┘
-                            ▼
-                   Feature Engineering
-                            │
-                            ▼
-                  Reliability Assessment
-                            │
-                            ▼
-                    Anomaly Detection
-                            │
-                            ▼
-                       Trust Score
-                            │
-                            ▼
-                       Validation
+                ┌─────────────────────────┐
+                │ Multi-Channel Measurements │
+                └────────────┬────────────┘
+                             ▼
+                ┌─────────────────────────┐
+                │   Data Understanding    │
+                └────────────┬────────────┘
+                             ▼
+                ┌─────────────────────────┐
+                │   Data Quality Checks   │
+                └────────────┬────────────┘
+                             ▼
+                ┌─────────────────────────┐
+                │  Exploratory Analysis   │
+                └────────────┬────────────┘
+                             │
+               ┌─────────────┼─────────────┐
+               ▼             ▼             ▼
+          ┌──────────┐ ┌──────────┐ ┌────────────┐
+          │ Channel  │ │ Temporal │ │ Statistical│
+          │ Analysis │ │ Analysis │ │  Analysis  │
+          └────┬─────┘ └────┬─────┘ └─────┬──────┘
+               └─────────────┼─────────────┘
+                             ▼
+                ┌─────────────────────────┐
+                │ Reliability Features   │
+                └────────────┬────────────┘
+                             ▼
+                ┌─────────────────────────┐
+                │ Reliability Signals    │
+                └────────────┬────────────┘
+                             ▼
+                ┌─────────────────────────┐
+                │ Anomaly / Pattern       │
+                │ Detection               │
+                └────────────┬────────────┘
+                             ▼
+                ┌─────────────────────────┐
+                │       Trust Score       │
+                └────────────┬────────────┘
+                             ▼
+                ┌─────────────────────────┐
+                │      Explanation        │
+                └────────────┬────────────┘
+                             ▼
+                ┌─────────────────────────┐
+                │       Validation        │
+                └─────────────────────────┘
 ```
-
 ---
 
 ## 📊 Data Overview
@@ -342,6 +389,21 @@ The Data Trust Engine is designed to answer questions such as:
 * Which channels contribute most to reliability issues?
 * Can multiple signals be combined into a meaningful trust score?
 * How effectively can potentially unreliable measurements be identified?
+
+---
+
+## ✅ Feasibility
+
+The proposed solution is feasible for the provided development data.
+
+- The development dataset contains 9,800 training observations and 2,100 validation observations.
+- The dataset size allows efficient experimentation using Python-based data science tools.
+- Temporal, statistical and cross-channel features can be calculated using standard data-processing techniques.
+- Candidate anomaly-detection methods can be implemented using Scikit-learn and statistical approaches.
+- The solution can be developed incrementally from data quality analysis to trust-score generation.
+- The approach does not initially depend on computationally expensive deep-learning models.
+
+Our priority is to build a solution that is **interpretable, computationally practical and robust**.
 
 ---
 
