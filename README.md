@@ -353,13 +353,34 @@ Depending on the final modeling approach, relevant metrics may include:
 ```text
 XO06_DS02/
 │
+├── dashboard/
+│   └── app.py
+│
 ├── data/
 │   ├── development_train.csv
-│   └── development_validation.csv
+│   ├── development_validation.csv
+│   ├── surprise_challenge_*.csv
+│   └── surprise_challenge_*.csv
+│
+├── notebooks/
+│   ├── Data cleaning.ipynb
+│   ├── ml_model.ipynb
+│   ├── reliability_scoring.ipynb
+│   └── surprise_challenge_*.ipynb
+│
+├── outputs/
+│   ├── challenge2_drift_results.csv
+│   ├── ml_anomaly_results.csv
+│   └── scored_train.csv
 │
 ├── src/
+│   ├── __pycache__/
+│   ├── feature_engineering.py
 │   ├── main.py
-│   └── Data cleaning.ipynb
+│   ├── ml_model
+│   ├── ml_model.py
+│   ├── reliability_scoring.py
+│   └── surprise_challenge_*.py
 │
 ├── README.md
 └── requirements.txt
@@ -395,18 +416,24 @@ Our priority is to build a solution that is **interpretable, computationally pra
 
 ---
 
-## 🌟 Expected Impact
+## 🎯 MVP
 
-A conventional monitoring system answers:
+The MVP delivers an end-to-end Data Trust Engine that analyzes multi-channel sensor measurements and assigns each observation a 0–100 trust score.
 
-> **“What did the sensor measure?”**
+### Key Capabilities
 
-The Data Trust Engine aims to answer an additional and more important question:
+- Temporal anomaly detection
+- Statistical outlier detection
+- Cross-sensor relationship analysis
+- Missing-data assessment
+- Isolation Forest ML anomaly detection
+- Explainable trust scoring
+- Affected sensor identification
+- Trusted / Needs Review classification
+- Interactive Streamlit dashboard
 
-> **“How much can we trust that measurement?”**
-
-By introducing a reliability layer on top of raw measurements, the system can support more informed analysis and decision-making in multi-channel monitoring environments.
-
+**Live Demo:**  
+https://xo06ds02-6sher2pjuqzciyaunwd6c4.streamlit.app/
 ---
 ## 🚀 Project Status
 
@@ -418,17 +445,17 @@ By introducing a reliability layer on top of raw measurements, the system can su
 | 2 | Repository Setup | 🟢 Completed | Team | GitHub repository created |
 | 3 | Dataset Loading | 🟢 Completed | Ranjana | Train & validation datasets loaded |
 | 4 | Initial Data Exploration | 🟢 Completed | Ranjana | Shape, columns, types, statistics |
-| 5 | Data Cleaning | 🟢 completed | Ranjana | Missing values, duplicates, invalid values |
-| 6 | Feature Engineering | ⚪ Not Started | — | Temporal & cross-channel features |
-| 7 | Anomaly Detection | ⚪ Not Started | — | Isolation Forest / statistical methods |
-| 8 | Trust Score Engine | ⚪ Not Started | — | Observation-level reliability score |
-| 9 | Issue Classification | ⚪ Not Started | — | Spike, drift, missing, inconsistency, etc. |
-| 10 | Recommendation Engine | ⚪ Not Started | — | Accept / Correct / Flag / Reject |
-| 11 | Explainability | ⚪ Not Started | — | Reasons behind each trust decision |
-| 12 | Model Evaluation | ⚪ Not Started | — | Validation dataset evaluation |
-| 13 | Streamlit Dashboard | ⚪ Not Started | — | Interactive trust assessment |
-| 14 | Testing | ⚪ Not Started | Team | Edge cases and robustness |
-| 15 | Documentation | 🟡 In Progress | Teammate | README and technical documentation |
+| 5 | Data Cleaning | | Ranjana | Missing values, duplicates, invalid values |
+| 6 | Feature Engineering | 🟢 completed  | — | Temporal & cross-channel features |
+| 7 | Anomaly Detection | 🟢 completed  | — | Isolation Forest / statistical methods |
+| 8 | Trust Score Engine | 🟢 completed | — | Observation-level reliability score |
+| 9 | Issue Classification | 🟢 completed  | — | Spike, drift, missing, inconsistency, etc. |
+| 10 | Recommendation Engine | 🟢 completed  | — | Accept / Correct / Flag / Reject |
+| 11 | Explainability | 🟢 completed | — | Reasons behind each trust decision |
+| 12 | Model Evaluation | 🟢 completed  | — | Validation dataset evaluation |
+| 13 | Streamlit Dashboard | 🟢 completed  | — | Interactive trust assessment |
+| 14 | Testing | 🟢 completed  | Team | Edge cases and robustness |
+| 15 | Documentation | 🟢 completed  | Teammate | README and technical documentation |
 | 16 | Final Demo | ⚪ Not Started | Team | Presentation and demonstration |
 
 ---
