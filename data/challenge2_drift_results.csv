@@ -1,0 +1,7 @@
+Station_ID,Channel,Drift_Detected,Approx_Drift_Start,Confidence
+SC2-01,CO_Channel,TRUE,13-10-2022 15:00,1
+SC2-01,NOx_Channel,TRUE,24-10-2022 13:00,1
+SC2-01,NO2_Channel,FALSE,,0
+SC2-02,CO_Channel,FALSE,,0
+SC2-02,NOx_Channel,TRUE,19-10-2022 03:00,1
+SC2-02,NO2_Channel,TRUE,01-10-2022 19:00,1
