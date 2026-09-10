@@ -18,16 +18,8 @@ st.set_page_config(
 # LOAD DATA
 # --------------------------------------------------
 
-PROJECT_ROOT = r"D:\XO06_DS02"
-
-DATA_PATH = os.path.join(
-    PROJECT_ROOT,
-    "outputs",
-    "ml_anomaly_results.csv"
-)
-
+DATA_PATH = "outputs/ml_anomaly_results.csv"
 df = pd.read_csv(DATA_PATH)
-
 
 # --------------------------------------------------
 # TITLE
