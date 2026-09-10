@@ -1,0 +1,209 @@
+# %%
+import sys
+import os
+
+import pandas as pd
+import numpy as np
+
+from sklearn.ensemble import IsolationForest
+from sklearn.preprocessing import StandardScaler
+
+print("✅ Libraries loaded")
+
+# %%
+PROJECT_ROOT = r"D:\XO06_DS02"
+
+if PROJECT_ROOT not in sys.path:
+    sys.path.insert(0, PROJECT_ROOT)
+
+print("Project root:", PROJECT_ROOT)
+
+# %%
+SCORED_PATH = os.path.join(
+    PROJECT_ROOT,
+    "outputs",
+    "scored_train.csv"
+)
+
+df = pd.read_csv(SCORED_PATH)
+
+print("Dataset shape:", df.shape)
+df.head()
+
+# %%
+ML_FEATURES = [
+    "CO_Channel",
+    "NOx_Channel",
+    "NO2_Channel",
+    "Ambient_Temperature",
+    "Relative_Humidity",
+    "Absolute_Humidity",
+    "Temporal_Anomaly_Count",
+    "Statistical_Anomaly_Count",
+    "Relationship_Anomaly_Count",
+    "Missing_Count"
+]
+
+print("ML features:")
+print(ML_FEATURES)
+
+# %%
+X = df[ML_FEATURES].copy()
+
+# Replace infinite values
+X = X.replace(
+    [np.inf, -np.inf],
+    np.nan
+)
+
+# Fill missing values with column median
+X = X.fillna(
+    X.median()
+)
+
+print("Training data shape:", X.shape)
+print("Missing values:", X.isna().sum().sum())
+
+# %%
+scaler = StandardScaler()
+
+X_scaled = scaler.fit_transform(X)
+
+print("✅ Features scaled")
+
+# %%
+model = IsolationForest(
+    n_estimators=200,
+    contamination=0.05,
+    random_state=42
+)
+
+model.fit(X_scaled)
+
+print("✅ Isolation Forest trained")
+
+# %%
+df["ML_Prediction"] = model.predict(
+    X_scaled
+)
+
+df["ML_Anomaly_Score"] = (
+    -model.score_samples(X_scaled)
+)
+
+print(
+    df["ML_Prediction"]
+    .value_counts()
+)
+
+# %%
+df["ML_Anomaly"] = (
+    df["ML_Prediction"] == -1
+).astype(int)
+
+df["ML_Status"] = np.where(
+    df["ML_Anomaly"] == 1,
+    "Anomalous",
+    "Normal"
+)
+
+df[
+    [
+        "Station_ID",
+        "Trust_Score",
+        "Trust_Category",
+        "ML_Status",
+        "ML_Anomaly_Score"
+    ]
+].head(20)
+
+# %%
+df["Final_Status"] = np.where(
+    (df["ML_Anomaly"] == 1) |
+    (df["Trust_Score"] < 60),
+    "Needs Review",
+    "Trusted"
+)
+
+df[
+    [
+        "Trust_Score",
+        "Trust_Category",
+        "ML_Status",
+        "Final_Status"
+    ]
+].head(20)
+
+# %%
+print("Final Status Distribution:")
+print(
+    df["Final_Status"]
+    .value_counts()
+)
+
+print("\nML Anomaly Distribution:")
+print(
+    df["ML_Status"]
+    .value_counts()
+)
+
+# %%
+ML_OUTPUT_PATH = os.path.join(
+    PROJECT_ROOT,
+    "outputs",
+    "ml_anomaly_results.csv"
+)
+
+df.to_csv(
+    ML_OUTPUT_PATH,
+    index=False
+)
+
+print("✅ ML results saved:")
+print(ML_OUTPUT_PATH)
+
+# %%
+import matplotlib.pyplot as plt
+
+ml_counts = df["ML_Status"].value_counts()
+
+plt.figure(figsize=(8, 5))
+
+ml_counts.plot(kind="bar")
+
+plt.xlabel("ML Status")
+plt.ylabel("Number of Observations")
+plt.title("Isolation Forest: Normal vs Anomalous Observations")
+
+plt.xticks(rotation=0)
+plt.show()
+
+# %%
+plt.figure(figsize=(10, 6))
+
+plt.hist(
+    df["ML_Anomaly_Score"],
+    bins=30
+)
+
+plt.xlabel("ML Anomaly Score")
+plt.ylabel("Number of Observations")
+plt.title("Isolation Forest Anomaly Score Distribution")
+
+plt.show()
+
+# %%
+plt.figure(figsize=(10, 6))
+
+plt.scatter(
+    df["Trust_Score"],
+    df["ML_Anomaly_Score"],
+    alpha=0.5
+)
+
+plt.xlabel("Trust Score")
+plt.ylabel("ML Anomaly Score")
+plt.title("Trust Score vs ML Anomaly Score")
+
+plt.show()
+
